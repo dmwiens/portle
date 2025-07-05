@@ -1,8 +1,9 @@
+import {Text, View} from 'react-native';
+
 export function GuessForm() {
     return (
-        <div>
-            <h1>Guess the street name</h1>
-        </div>
+        <View>
+            <Text>Guess the street name</Text>
+        </View>
     )
-
 }
