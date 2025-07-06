@@ -1,21 +1,22 @@
 import {Image} from 'expo-image';
 import {StyleSheet, Text, View} from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import {ThemedView} from '@/components/ThemedView';
 import {GuessForm} from "@/components/ui/GuessForm";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerTitle={<GreenSquaresTitle text="PORTLE" />}
-      headerBackgroundColor={{ light: 'white', dark: 'black' }}
-      headerImage={<Image
-          style={styles.reactLogo}
-          source={getImage()}/>}>
-      <ThemedView style={styles.titleContainer}>
-        <GuessForm />
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.window}>
+        <ThemedView style={styles.headerTitleContainer}>
+          <GreenSquaresTitle text="PORTLE" />
+        </ThemedView>
+        <View style={styles.mapContainer}>
+          <Image style={styles.mapImage}
+              source={getImage()}/>
+        </View>
+        <ThemedView style={styles.titleContainer}>
+          <GuessForm />
+        </ThemedView>
+      </View>
   );
 }
 
@@ -51,12 +52,19 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 200,
+  mapContainer: {
     width: '100%',
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+    alignItems: 'center',
+    paddingHorizontal: '7.5%',
+  },
+  mapImage: {
+    width: '85%',
+    aspectRatio: 1,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   greenSquare: {
     width: 32,
@@ -85,4 +93,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
   },
+  window: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+  }
 });
