@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 30,
+    marginBottom: 4,
   },
   window: {
     width: '100%',
