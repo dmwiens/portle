@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaflet Glisan Street Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Define bounds for Portland, Oregon
+    const portlandBounds = L.latLngBounds(
+      [45.4300, -122.8367], // Southwest corner
+      [45.6500, -122.4711]  // Northeast corner
+    );
+
+    // Center on Portland, Oregon and restrict view to bounds
+    const map = L.map('map', {
+      maxZoom: 14,
+      minZoom: 11,
+      maxBounds: portlandBounds,
+      maxBoundsViscosity: 1.0
+    }).setView([45.5231, -122.6765], 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 14
+    }).addTo(map);
+
+    // Load Glisan Street GeoJSON from external file
+    fetch('overpass_glisanSt.geojson')
+      .then(response => response.json())
+      .then(glisanGeoJson => {
+        L.geoJSON(glisanGeoJson, {
+          style: {
+            color: 'yellow',
+            weight: 8,
+            opacity: 1.0
+          },
+          pointToLayer: () => null // Prevent markers from rendering
+        }).addTo(map);
+      })
+      .catch(err => {
+        console.error('Failed to load GeoJSON:', err);
+      });
+  </script>
+</body>
+</html>
