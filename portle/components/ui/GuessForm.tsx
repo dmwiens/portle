@@ -69,6 +69,7 @@ export function GuessForm() {
             <Text>Guess the street name</Text>
             <Autocomplete
                 data={filteredOptions}
+                editable={!isGameOver}
                 defaultValue={currentGuess}
                 onChangeText={handleInputChange}
                 placeholder="Enter a street name"
