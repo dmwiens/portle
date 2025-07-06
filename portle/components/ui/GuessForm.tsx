@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, StyleSheet, Button} from 'react-native';
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
+import PreviousGuesses from "@/components/ui/PreviousGuesses";
+import Results from "@/components/ui/Results";
+
+const CORRECT_ANSWER = "Glisan Street";
+const MAX_GUESSES = 5;
 
 const options = [
     'Main Street',
@@ -13,18 +18,20 @@ const options = [
     '2nd Avenue',
     '33rd Avenue',
     'I-84',
-    'Glisan Street',
     'Lombard Street',
     'Alberta Street',
     'Park Lane',
-];
+].concat(CORRECT_ANSWER).sort();
 
 export function GuessForm() {
-    const [guess, setGuess] = useState('');
+    const [currentGuess, setCurrentGuess] = useState('');
+    const [previousGuesses, setPreviousGuesses] = useState([]);
     const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
+    const [results, setResults] = useState<string>();
+    const [isGameOver, setIsGameOver] = useState(false);
 
     const handleInputChange = (text: string) => {
-        setGuess(text);
+        setCurrentGuess(text);
         if (text) {
             const results = options.filter(option =>
                 option.toLowerCase().includes(text.toLowerCase())
@@ -36,16 +43,33 @@ export function GuessForm() {
     };
 
     const handleSelect = (option: string) => {
-        setGuess(option);
+        setCurrentGuess(option);
         setFilteredOptions([]);
     };
+
+    const handleGuessSubmission = () => {
+        if (isCorrectGuess(currentGuess)) {
+            setIsGameOver(true)
+            setResults('Success! You guessed the correct street name')
+        } else if (previousGuesses.length < MAX_GUESSES) {
+            if (previousGuesses.includes(currentGuess)) {
+                return
+            }
+            setPreviousGuesses(prevGuesses => {
+                return [...prevGuesses, currentGuess]
+            })
+        } else {
+            setIsGameOver(true)
+            setResults('Game Over! You have reached the maximum number of guesses')
+        }
+    }
 
     return (
         <View style={styles.container}>
             <Text>Guess the street name</Text>
             <Autocomplete
                 data={filteredOptions}
-                defaultValue={guess}
+                defaultValue={currentGuess}
                 onChangeText={handleInputChange}
                 placeholder="Enter a street name"
                 flatListProps={{
@@ -59,19 +83,22 @@ export function GuessForm() {
                 inputContainerStyle={styles.inputContainer}
                 keyboardShouldPersistTaps='always'
             />
-            <Button title={'check'} onPress={() => handleGuessSubmission()} />
+            <Button disabled={isGameOver} title={'check'} onPress={() => handleGuessSubmission()} />
+            <PreviousGuesses guesses={previousGuesses} />
+            <Results message={results}/>
         </View>
     );
 }
 
-function handleGuessSubmission() {
-    console.log('guess submitted');
+function isCorrectGuess(guess: string) {
+    return guess.toLowerCase() === CORRECT_ANSWER.toLowerCase();
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 50,
-        paddingHorizontal: 20,
+        marginTop: 20,
+        paddingHorizontal: 10,
+        alignItems: 'stretch',
     },
     item: {
         padding: 10,

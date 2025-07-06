@@ -3,8 +3,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import {ThemedView} from '@/components/ThemedView';
 import {GuessForm} from "@/components/ui/GuessForm";
-import PreviousGuesses from "@/components/ui/PreviousGuesses";
-import Results from "@/components/ui/Results";
 
 export default function HomeScreen() {
   return (
@@ -16,8 +14,6 @@ export default function HomeScreen() {
           source={getImage()}/>}>
       <ThemedView style={styles.titleContainer}>
         <GuessForm />
-        <PreviousGuesses />
-        <Results />
       </ThemedView>
     </ParallaxScrollView>
   );
