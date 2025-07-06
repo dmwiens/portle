@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet, Button} from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 
 const options = [
@@ -20,11 +20,11 @@ const options = [
 ];
 
 export function GuessForm() {
-    const [query, setQuery] = useState('');
+    const [guess, setGuess] = useState('');
     const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
 
     const handleInputChange = (text: string) => {
-        setQuery(text);
+        setGuess(text);
         if (text) {
             const results = options.filter(option =>
                 option.toLowerCase().includes(text.toLowerCase())
@@ -36,7 +36,7 @@ export function GuessForm() {
     };
 
     const handleSelect = (option: string) => {
-        setQuery(option);
+        setGuess(option);
         setFilteredOptions([]);
     };
 
@@ -45,7 +45,7 @@ export function GuessForm() {
             <Text>Guess the street name</Text>
             <Autocomplete
                 data={filteredOptions}
-                defaultValue={query}
+                defaultValue={guess}
                 onChangeText={handleInputChange}
                 placeholder="Enter a street name"
                 flatListProps={{
@@ -59,8 +59,13 @@ export function GuessForm() {
                 inputContainerStyle={styles.inputContainer}
                 keyboardShouldPersistTaps='always'
             />
+            <Button title={'check'} onPress={() => handleGuessSubmission()} />
         </View>
     );
+}
+
+function handleGuessSubmission() {
+    console.log('guess submitted');
 }
 
 const styles = StyleSheet.create({
